@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Vat Validator</title>
+        <script type = "text/javascript">
+        function validateVat() {
+
+            console.log("here");
+            var vatInput = document.getElementById("textboxid").value;
+            console.log(vatInput);
+
+            fetch("http://localhost:8001", {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({"vat_number": vatInput}) // body data type must match "Content-Type" header
+            })
+            .then((response) => response.json())
+            .then(data => {
+                if (data.is_valid === true) {
+                    alert("The vat number " + data.vat_number + " is a valid VAT number");
+                }
+                else
+                {
+                    alert(data.message);
+                }
+            });
+        }
+        </script>
+        <style>
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+} 
+
+#textboxid
+{
+    width: 300;
+    font-size:12pt;
+}
+    </style>
+    </head>
+    <body>
+        <div class="center">
+            <input id = "textboxid" placeholder="Enter vat number with country code" style = "text-align:center;"> 
+            <button onclick="validateVat()" id = "btn1">Validate</button>
+        </div>
+    </body>
+</html>
