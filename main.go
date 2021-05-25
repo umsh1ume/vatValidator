@@ -27,7 +27,7 @@ func NewVatValidationResponse(vatNumber string, isValid bool, message string) Va
 }
 
 func main() {
-	http.HandleFunc("/", ValidateVat)
+	http.HandleFunc("/validate_vat", ValidateVat)
 	if err := http.ListenAndServe(":8001", nil); err != nil {
 		log.Fatal(err)
 	}
